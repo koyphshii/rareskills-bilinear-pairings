@@ -1,9 +1,7 @@
 ## How bilinear pairings work
 
-i was learning about bilinear pairings from the rareskills zk book, and in my initial read of the chapter i had so many questions because i didn't understand due to my low iq, so i listed them and then went through them, at first i will share the questions and then talk about what i understood after.
-(the screenshots are from the book)
-
-
+i was learning about bilinear pairings from the rareskills zk book, and in my initial read of the chapter i had so many questions because i didn't understand due to my low iq, so i listed them and then went through them, at first i will share the questions and then talk about what i understood after. (the screenshots are from the book)
+https://rareskills.io/post/bilinear-pairing#end-to-end-solidity-example-of-bilinear-pairings
 
 ![pairing intro](images/pairing-intro.png)
 
