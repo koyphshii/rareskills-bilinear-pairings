@@ -1,5 +1,7 @@
 ## How bilinear pairings work
 
+i was learning about bilinear pairings from the rareskills zk book, and in my initial read of the chapter i had so many questions because i didn't understand due to my low iq, so i listed them and then went through them, at first i will share the questions and then talk about what i understood after
+
 ![pairing intro](images/pairing-intro.png)
 
 here they said that the pairing allows us to prove that a number is the product of 2 other numbers without ever leaking the numbers, is this the only use case ? i don't know
