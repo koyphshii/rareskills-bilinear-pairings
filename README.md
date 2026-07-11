@@ -135,3 +135,21 @@ why is Gt really complex? well remember that the pairing is a function, if takes
 hopefully from my perspective, what i have written here answers my questions, remember that i am just a beginner in this field, so don't take it as official resource to work on, instead my goal is to have people that review it and help me improve my tagging mistakes i did
 
 And from now, i will be showing my POC of this book chapter because i liked it so i read it 
+
+## Bilinear Pairings in Ethereum
+
+### precompiles
+
+when we are working with a programming language that produces `evm` bytecode, for example solidity, if the function we did implement in solidity was complicated, it will produce so many opcodes, and the `evm` interpreter will execute each opcode one by one, and that will cost gas, so complicated logic can lead to consuming so much gas
+
+when talking about a pairing function, it is actually really really complicated, and if we implement it using solidity directly (meaning in the smart contract we write all the logic) it will produce a very big amount of opcodes and this can lead to problems
+
+for this reason `ethereum precompiles` exist, what they do is basically when we call `pairing` in solidity, it will not produce bytecode that correspond to the logic of the `pairing`, instead it produces a call opcode, specifically `CALL 0X8`, and then the `evm` will execute the pairing logic
+
+as we know, depending and what client we are running, the `evm` will use a certain programming language, for example if we were using `geth`, then all the `evm` logic is implemented using go, for example the `ADD` opcode is implemented using go, so when hitting the `CALL 0x8` opcode, we will be running the pairing logic using go
+
+and the `0x8 precompile` follows the `EIP 197 Specification`, which tell the `evm implementation` we are running what to do exactly when hitting that `0x8` call, like how much gas it most cost, what to return, the format, the groups we should use, and pretty much everything, you can find it here https://eips.ethereum.org/EIPS/eip-197
+
+`PyEVM` is a python implementation of the `EVM` specification, but there is no running client with this implementation participating in the `ethereum` network, because `PyEVM` was built mainly for testing and research, the project is now archived and you can find it here https://github.com/ethereum/py-evm
+
+previously in this chapter, we worked with the `py_ecc` library, this library is actually the code that is implemented for the `0x8 precompile` in the `PyEVM`
