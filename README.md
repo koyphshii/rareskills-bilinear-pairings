@@ -146,7 +146,7 @@ when talking about a pairing function, it is actually really really complicated,
 
 for this reason `ethereum precompiles` exist, what they do is basically when we call `pairing` in solidity, it will not produce bytecode that correspond to the logic of the `pairing`, instead it produces a call opcode, specifically `STATICCALL 0X8`, and then we run the pairing math directly in the host cpu, bypassing the `evm` interpreter loops
 
-as we know, depending and what client we are running, the `evm` will use a certain programming language, for example if we were using `geth`, then all the `evm` logic is implemented using go, for example the `ADD` opcode is implemented using go, so when hitting the `CALL 0x8` opcode, we will be running the pairing logic using go, a language like go running on the cpu can perform much more efficiently
+as we know, depending and what client we are running, the `evm` will use a certain programming language, for example if we were using `geth`, then all the `evm` logic is implemented using go, for example the `ADD` opcode is implemented using go, so when hitting the `STATICCALL 0x8` opcode, we will be running the pairing logic using go, a language like go running on the cpu can perform much more efficiently
 
 and the `0x8 precompile` follows the `EIP 197 Specification`, which tell the `evm implementation` we are running what to do exactly when hitting that `0x8` call, like how much gas it most cost, what to return, the format, the groups we should use, and pretty much everything, you can find it here https://eips.ethereum.org/EIPS/eip-197
 
