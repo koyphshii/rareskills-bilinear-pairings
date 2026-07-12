@@ -163,6 +163,40 @@ here is one way to do that in solidity :
 ```
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.13;
+contract Pairings {
+    /** 
+     *  returns true if == 0,
+     *  returns false if != 0,
+     *  reverts with "Wrong pairing" if invalid pairing
+     */
+     function run(uint256[12] memory input) public view returns (bool) {
+        assembly {
+            let success := staticcall(gas(), 0x08, input, 0x0180, input, 0x20)
+            if success {
+                return(input, 0x20)
+            }
+        }
+        revert("Wrong pairing");
+    }
+}
+```
+
+so what will happen is that we call the `run` function and the calldata will be a contigueous 12 words (each one 32 bytes)
+
+why 12 exactly ? remember the groups we are working on, G1 elements are points are of the form (x,y), meaning 2 words, meanwhile G2 elements are of the form ((x1,y1),(x2,y2)), meaning 4 words, so one pairing function takes 6 words, and in this example we are comparing 2 pairings together, so 12 words
+
+now since we specified that input will be in memory, because ever calling the static call, the raw data is already in memory, what is left is reading it 
+
+`staticcall(gas(), 0x08, input, 0x0180, input, 0x20)` here the variable `input` corresponds to the offset of the data in memory, and 0x0180 is 32*12
+so it is basically starting offset + length, and the second input is the return offset, since we wont need the points we will use in the pairing after the math, we can overwrite it with the result, and 0x32 is the length of the result which will a boolean
+
+after that, the precompile that is getting called will read from calldata and perform the math
+
+and this is how we call this run function : 
+
+```
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.13;
 import "forge-std/Test.sol";
 import "../src/Pairings.sol";
 
@@ -210,3 +244,7 @@ contract PairingsTest is Test {
     }
 }
 ```
+
+after running this code, this is the result : 
+
+<img width="1586" height="446" alt="image" src="https://github.com/user-attachments/assets/9bef974d-b3b0-4f85-8393-7de1ec007ff0" />
