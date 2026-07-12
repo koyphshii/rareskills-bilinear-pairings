@@ -144,7 +144,7 @@ when we are working with a programming language that produces `evm` bytecode, fo
 
 when talking about a pairing function, it is actually really really complicated,the codomain group elements have a dimension of 12, and when we are restricted to the native opcodes of the evm that can only work with 256 bits words, we will need so many opcodes to work with the Gt elements, so if we implement it using solidity directly (meaning in the smart contract we write all the logic) it will produce a very big amount of opcodes and this can lead to problems like hitting the maximum size of the block
 
-for this reason `ethereum precompiles` exist, what they do is basically when we call `pairing` in solidity, it will not produce bytecode that correspond to the logic of the `pairing`, instead it produces a call opcode, specifically `CALL 0X8`, and then the `evm` will execute the pairing logic
+for this reason `ethereum precompiles` exist, what they do is basically when we call `pairing` in solidity, it will not produce bytecode that correspond to the logic of the `pairing`, instead it produces a call opcode, specifically `STATICCALL 0X8`, and then we run the pairing math directly in the host cpu, bypassing the `evm` interpreter loops
 
 as we know, depending and what client we are running, the `evm` will use a certain programming language, for example if we were using `geth`, then all the `evm` logic is implemented using go, for example the `ADD` opcode is implemented using go, so when hitting the `CALL 0x8` opcode, we will be running the pairing logic using go, a language like go running on the cpu can perform much more efficiently
 
